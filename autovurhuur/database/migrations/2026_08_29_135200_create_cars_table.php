@@ -11,16 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('reservations', function (Blueprint $table) {
+        Schema::create('cars', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("car_id")
-                ->constrained();
-            $table->string("name");
-            $table->string("email")
-                ->unique();
-            $table->date('birth_date');
-            $table->date('start_date');
-            $table->date('end_date');
+            $table->string("merk");
+            $table->string("model");
+            $table->integer("bouwjaar");
+            $table->decimal("price_per_day");
+            $table->text("omschrijving")->nullable();
+            $table->boolean("beschikbaar")->default(true);
+            $table->string("primary_image");
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('reservations');
+        Schema::dropIfExists('cars');
     }
 };
