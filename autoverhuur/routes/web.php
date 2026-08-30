@@ -21,9 +21,7 @@ Route::middleware('auth')->group(function () {
 
     // Admin auto-beheer (vervangt alle 6 de losse car-routes in 1 keer)
     // ->names('admin.cars') koppelt 'admin.cars.' voor de routenamen, zodat je in de view via route bijv:('admin.cars.index')
-    Route::prefix('admin')->name('admin.')->group(function () {
-        Route::resource('cars', AdminCarController::class);
-    });
+    Route::resource("/admin/cars", AdminCarController:: class)->names("admin.cars");
 });
 
 // Publieke routes voor bezoekers (alleen index en show)

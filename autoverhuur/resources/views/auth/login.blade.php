@@ -24,6 +24,11 @@
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
+        <!-- Link naar de registratiepagina -->
+        <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('register') }}">
+            Nog geen account? Registreer hier
+        </a>
+
         <!-- Remember Me -->
         <div class="block mt-4">
             <label for="remember_me" class="inline-flex items-center">
