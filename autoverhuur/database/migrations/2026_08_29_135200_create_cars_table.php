@@ -19,7 +19,7 @@ return new class extends Migration
             $table->decimal("price_per_day");
             $table->text("omschrijving")->nullable();
             $table->boolean("beschikbaar")->default(true);
-            $table->string("primary_image");
+            $table->string("primary_image")->nullable(); // nullable aangemaakt
             $table->timestamps();
         });
     }

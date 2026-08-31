@@ -37,13 +37,29 @@ class CarController extends Controller
             "bouwjaar"          =>"required|integer|min:1970|max:".(date('Y') +1),
             "price_per_day"     =>"required|numeric|min:0",
             "omschrijving"      =>"nullable|string",
-            "primary_image"     =>"nullable|image|mimes:jpeg,png,jpg,webp|max:2048",
+            "primary_images"     =>"nullable|array",
+            "primary_images.*"     =>"image|mimes:jpeg,png,jpg,webp|max:2048",
         ]);
-        if ($request->hasFile("primary_image")){
-            $path = $request->file("primary_image")->store("cars", "public");
-            $validated["primary_image"] = $path;
+        
+        $car = Car::create($validated);
+
+        if ($request->hasFile("primary_images")){
+            foreach($request->file("primary_images") as $index => $image){
+                $path = $image->store("cars", "public");
+                
+                // 1. Opslaan in car_images tabel
+                $car->images()->create([
+                    "image_path" => $path
+                ]);
+
+                // 2. Als dit de eerste foto is, stel deze in op het Car model zelf
+                if ($index === 0) {
+                    $car->update([
+                        'primary_image' => $path
+                    ]);
+                }
+            }
         }
-        Car::create($validated);
 
         return redirect()->route("admin.cars.index")->with("success", "De auto is succesvol toegevoegd.");
 

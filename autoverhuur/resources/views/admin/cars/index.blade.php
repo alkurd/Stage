@@ -20,10 +20,16 @@
             <tbody>
                 @forelse( $cars as $car)
                 <tr>
-                    <td></td>
+                    <td style="width: 100px;">
+                                @if($car->primary_image)
+                                    <img src="{{ asset('storage/' . $car->primary_image) }}" alt="{{ $car->merk }}" class="img-thumbnail" style="max-height: 60px;">
+                                @else
+                                    <span class="badge bg-secondary">Geen foto</span>
+                                @endif
+                            </td>
                     <td><strong>{{ $car->merk }}</strong> {{ $car->model }}</td>
                     <td>{{ $car->bouwjaar }}</td>
-                    <td>{{ $car->price_per_day }}</td>
+                    <td>€{{ number_format($car->price_per_day, 2, ',', '.') }}</td>
                     <td class="text-end">
                         <a href="{{ route('admin.cars.edit', $car) }}" class="btn btn-outline-primary btn-sm m-1">Bewerken</a>
                         <form action="{{ route('admin.cars.destroy', $car) }}" method="post" class="d-inline" onsubmit="return confirm('Weet je zeker dat je deze auto wilt verwijderen?')">

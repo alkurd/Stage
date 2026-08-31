@@ -16,7 +16,7 @@ class Car extends Model
         "primary_image"
     ];
     public function images(){
-        return $this->hasMany(CarImage::class);
+        return $this->hasMany(CarImage::class);;
     }
     public function reservations(){
         return $this->hasMany(Reservation::class);
