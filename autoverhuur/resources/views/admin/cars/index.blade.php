@@ -30,12 +30,12 @@
                     <td><strong>{{ $car->merk }}</strong> {{ $car->model }}</td>
                     <td>{{ $car->bouwjaar }}</td>
                     <td>€{{ number_format($car->price_per_day, 2, ',', '.') }}</td>
-                    <td class="text-end">
+                    <td>
                         <a href="{{ route('admin.cars.edit', $car) }}" class="btn btn-outline-primary btn-sm m-1">Bewerken</a>
                         <form action="{{ route('admin.cars.destroy', $car) }}" method="post" class="d-inline" onsubmit="return confirm('Weet je zeker dat je deze auto wilt verwijderen?')">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-ouline-danger btn-sm" >Verwijderen</button>
+                            <button type="submit" class="btn btn-outline-danger btn-sm" >Verwijderen</button>
                         </form>
                     </td>
                 </tr>
