@@ -1,4 +1,4 @@
-<div class="row mt-3">
+<div class="row ">
     @foreach($car->images as $image)
     <div class="col-6 col-md-3 mb-3">
         <img src="{{ asset('storage/' . $image->image_path) }}" alt="Auto foto" class="img-fluid img-thumbnail rounded">

@@ -22,6 +22,10 @@
     
         <label>Omschrijving</label>
         <textarea  name="omschrijving" class="form-control">{{ $car->omschrijving }}</textarea>
+
+        <label>Beschikbaar</label>
+        <input type="hidden" name="beschikbaar" value="0">
+        <input type="checkbox" name="beschikbaar" value="1" {{ old('beschikbaar', $car->beschikbaar) ? 'checked' : '' }}>
    
         @include('admin.cars.partials._image-manager')
 
