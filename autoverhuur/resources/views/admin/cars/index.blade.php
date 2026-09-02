@@ -27,7 +27,7 @@
                                     <span class="badge bg-secondary">Geen foto</span>
                                 @endif
                             </td>
-                    <td><strong>{{ $car->merk }}</strong> {{ $car->model }}</td>
+                    <td class="text-capitalize"><strong>{{ $car->merk }}</strong> {{ $car->model }}</td>
                     <td>{{ $car->bouwjaar }}</td>
                     <td>€{{ number_format($car->price_per_day, 2, ',', '.') }}</td>
                     <td>
