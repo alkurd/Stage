@@ -71,7 +71,11 @@ class ReservationController extends Controller
             return back()->withInput()
             ->withErrors(['start_date' => 'Deze auto is op de geselecteerde datums al gereserveerd.']);
         }   
-        return redirect()->route('cars.index')->with('success', 'Reservering succesvol gemaakt!');
+        return redirect()->route('reservations.conformation', $reservation)->with('success', 'Reservering succesvol gemaakt!');
+    }
+    public function conformation(Reservation $reservation, Car $car)
+    {
+        return view('reservations.conformation', compact('reservation', 'car'));
     }
 
     /**

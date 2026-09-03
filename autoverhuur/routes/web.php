@@ -28,8 +28,10 @@ Route::middleware('auth')->group(function () {
 
 // Publieke routes voor bezoekers (alleen index en show)
 Route::resource("cars", CarController:: class)->only([ "index", "show" ])->names("cars");
+
 Route::get('/reservations/create/{car}', [ReservationController::class, 'create'])->name('reservations.create');
 Route::post('/reservations', [ReservationController::class, 'store'])->name('reservations.store');
+Route::get('/reservations/conformation/{reservation}', [ReservationController::class, 'conformation'])->name('reservations.conformation');
 
 
 require __DIR__.'/auth.php';
