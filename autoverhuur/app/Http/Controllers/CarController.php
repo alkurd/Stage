@@ -37,6 +37,7 @@ class CarController extends Controller
      */
     public function show(Car $car)
     {
+        $car->load(['images', 'reservations']);
         return view("cars.show",compact("car"));
     }
 
