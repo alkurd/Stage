@@ -72,9 +72,6 @@ class ReservationController extends Controller
             ->withErrors(['start_date' => 'Deze auto is op de geselecteerde datums al gereserveerd.']);
         }   
         return redirect()->route('cars.index')->with('success', 'Reservering succesvol gemaakt!');
-        
-
-        // return redirect()->route('cars.index')->with('success', 'Reservering succesvol gemaakt!');
     }
 
     /**
