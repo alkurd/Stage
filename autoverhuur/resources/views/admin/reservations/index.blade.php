@@ -41,23 +41,21 @@
                     Verwerken
                 </a>
 
-                <form action="{{ route('admin.reservations.destroy', $reservation) }}" method="POST"  onsubmit="return confirm('Weet je zeker dat je deze reservering wilt verwijderen?');">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-sm btn-outline-danger w-100">
-                        Verwijderen
-                    </button>
-                </form>
+                {{-- Afwijzen --}}
+            <form action="{{ route('admin.reservations.reject', $reservation) }}" method="POST">
+                @csrf
+                @method('PATCH')
+                <input type="hidden" name="status" value="rejected">
+                <button type="submit" class="btn btn-sm btn-outline-danger w-100">Afwijzen</button>
+            </form>
             </div>
 
             {{-- Onderste rij: Goedkeuren (even breed als het blok erboven) --}}
-            <form action="{{ route('admin.reservations.update', $reservation) }}" method="POST">
+            <form action="{{ route('admin.reservations.approve', $reservation) }}" method="POST">
                 @csrf
-                @method('PUT')
+                @method('PATCH')
                 <input type="hidden" name="status" value="approved">
-                <button type="submit" class="btn btn-sm btn-success w-100">
-                    Goedkeuren
-                </button>
+                <button type="submit" class="btn btn-sm btn-success w-100">Goedkeuren</button>
             </form>
         </div>
             </td>

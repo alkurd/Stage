@@ -24,6 +24,10 @@ Route::middleware('auth')->group(function () {
     // ->names('admin.cars') koppelt 'admin.cars.' voor de routenamen, zodat je in de view via route bijv:('admin.cars.index')
     Route::resource("/admin/cars", AdminCarController:: class)->names("admin.cars");
     Route::resource("/admin/reservations", ReservationController:: class)->except(["create", "store"])->names("admin.reservations");
+
+    // Extra routes for approving and rejecting reservations
+    Route::patch('/admin/reservations/{reservation}/approve', [ReservationController::class, 'approve'])->name('admin.reservations.approve');
+    Route::patch('/admin/reservations/{reservation}/reject', [ReservationController::class, 'reject'])->name('admin.reservations.reject');
 });
 
 // Publieke routes voor bezoekers (alleen index en show)

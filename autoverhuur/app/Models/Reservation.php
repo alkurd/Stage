@@ -10,9 +10,11 @@ class Reservation extends Model
         "car_id",
         "name",
         "email",
+        "phone",
         "birth_date",
         "start_date",
-        "end_date"
+        "end_date",
+        "status"
 
     ];
     public function car(){

@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
 use App\Models\Car;
+use App\Mail\ReservationApproved;
+use App\Mail\ReservationRejected;
+use Illuminate\Support\Facades\Mail;
 
 class ReservationController extends Controller
 {
@@ -53,6 +56,7 @@ class ReservationController extends Controller
             'birth_date'    => 'required|date|before:' . now()->subYears(18)->format('Y-m-d'),
             'start_date'    => 'required|date|after_or_equal:today',
             'end_date'      => 'required|date|after:start_date',
+            // 'status'        => 'required|in:pending,approved,rejected'
         ]);
 
         $overlap = Reservation::where('car_id', $validated['car_id'])
@@ -109,6 +113,7 @@ class ReservationController extends Controller
             'birth_date'    => 'required|date|before:' . now()->subYears(18)->format('Y-m-d'),
             'start_date'    => 'required|date|after_or_equal:today',
             'end_date'      => 'required|date|after:start_date',
+            'status'        => 'required|in:pending,approved,rejected'
         ]);
 
         $overlap = Reservation::where('car_id', $validated['car_id'])
@@ -138,5 +143,28 @@ class ReservationController extends Controller
     {
         $reservation->delete();
         return redirect()->route('admin.reservations.index')->with('success', 'Reservering succesvol verwijderd!');
+    }
+
+
+    // E-mail status
+    public function approve(Reservation $reservation)
+    {
+        // 1. Status van reservering aanpassen
+        $reservation->update(['status' => 'approved']);
+
+        // 2. E-mail sturen naar het e-mailadres van de klant
+        Mail::to($reservation->email)->send(new ReservationApproved($reservation));
+
+        return back()->with('success', 'Reservering goedgekeurd en e-mail verzonden naar de klant!');
+    }
+    public function reject(Reservation $reservation)
+    {
+        // 1. Status van reservering aanpassen
+        $reservation->update(['status' => 'rejected']);
+
+        // 2. E-mail sturen naar het e-mailadres van de klant
+        Mail::to($reservation->email)->send(new ReservationRejected($reservation));
+
+        return back()->with('success', 'Reservering afgewezen en e-mail verzonden naar de klant!');
     }
 }
