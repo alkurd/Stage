@@ -17,6 +17,7 @@
                 <a href="{{ route('cars.index') }}" class="btn btn-outline-light btn-sm me-2">Publiek Aanbod</a>
                 @auth
                 <a href="{{ route('admin.cars.index') }}" class="btn btn-warning btn-sm">Admin Beheer</a>
+                <a href="{{ route('admin.reservations.index') }}" class="btn btn-info btn-sm">Reserveringen Beheer</a>
 
                 <form method="post" action="{{ route('logout') }}" class="d-inline">
                     @csrf

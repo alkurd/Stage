@@ -13,7 +13,8 @@ class ReservationController extends Controller
      */
     public function index()
     {
-        //
+        $reservations = Reservation::with('car')->latest()->get();
+        return view('admin.reservations.index', compact('reservations'));
     }
 
     /**
@@ -65,12 +66,12 @@ class ReservationController extends Controller
             })
             ->exists();
 
-        $reservation = Reservation::create($validated);
-        $reservation->car->update(['beschikbaar' => false]);
         if ($overlap) {
             return back()->withInput()
             ->withErrors(['start_date' => 'Deze auto is op de geselecteerde datums al gereserveerd.']);
         }   
+        $reservation = Reservation::create($validated);
+        $reservation->car->update(['beschikbaar' => false]);
         return redirect()->route('reservations.conformation', $reservation)->with('success', 'Reservering succesvol gemaakt!');
     }
     public function conformation(Reservation $reservation, Car $car)
@@ -91,7 +92,8 @@ class ReservationController extends Controller
      */
     public function edit(Reservation $reservation)
     {
-        //
+        $reservation->load('car');
+        return view('admin.reservations.edit', compact('reservation'));
     }
 
     /**
@@ -99,7 +101,34 @@ class ReservationController extends Controller
      */
     public function update(Request $request, Reservation $reservation)
     {
-        //
+        $validated = $request->validate([
+            'car_id'        => 'required|exists:cars,id',
+            'name'          => 'required|string|max:255',
+            'email'         => 'required|email|max:255',
+            'phone'         => 'required|string|max:20',
+            'birth_date'    => 'required|date|before:' . now()->subYears(18)->format('Y-m-d'),
+            'start_date'    => 'required|date|after_or_equal:today',
+            'end_date'      => 'required|date|after:start_date',
+        ]);
+
+        $overlap = Reservation::where('car_id', $validated['car_id'])
+            ->where('id', '!=', $reservation->id) // Exclude the current reservation from the overlap check
+            ->where(function ($query) use ($validated) {
+                $query->whereBetween('start_date', [$validated['start_date'], $validated['end_date']])
+                      ->orWhereBetween('end_date', [$validated['start_date'], $validated['end_date']])
+                      ->orWhere(function ($query) use ($validated) {
+                          $query->where('start_date', '<=', $validated['start_date'])
+                                ->where('end_date', '>=', $validated['end_date']);
+                      });
+            })
+            ->exists();
+
+        if ($overlap) {
+            return back()->withInput()
+            ->withErrors(['start_date' => 'Deze auto is op de geselecteerde datums al gereserveerd.']);
+        }   
+        $reservation->update($validated);
+        return redirect()->route('admin.reservations.index')->with('success', 'Reservering succesvol gewijzigd!');
     }
 
     /**
@@ -107,6 +136,7 @@ class ReservationController extends Controller
      */
     public function destroy(Reservation $reservation)
     {
-        //
+        $reservation->delete();
+        return redirect()->route('admin.reservations.index')->with('success', 'Reservering succesvol verwijderd!');
     }
 }

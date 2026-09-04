@@ -1,6 +1,11 @@
 @extends('layouts.main')
 @section('titel','Alle Auto\'s')
 @section('content')
+@if($cars->isEmpty())
+    <div class="alert alert-info">
+        Er zijn momenteel geen auto's beschikbaar.
+    </div>
+@endif
 @foreach($cars as $car)
     <div class="card mb-3">
         <div class="row g-0">

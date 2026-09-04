@@ -1,6 +1,11 @@
 @extends('layouts.main')
 @section('titel','Auto Beheer\'s')
 @section('content')
+@if($cars->isEmpty())
+    <div class="alert alert-info">
+        Er zijn momenteel geen auto's beschikbaar.
+    </div>
+@endif
 <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Auto Beheer</h2>
         <a href="{{ route('admin.cars.create') }}" class="btn btn-success">+ Nieuwe Auto Toevoegen</a>

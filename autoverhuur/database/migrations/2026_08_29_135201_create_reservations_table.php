@@ -18,6 +18,7 @@ return new class extends Migration
                 ->cascadeOnDelete();
             $table->string("name");
             $table->string("email");
+            $table->string("phone");
             $table->date("birth_date");
             $table->date("start_date");
             $table->date("end_date");

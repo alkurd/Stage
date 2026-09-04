@@ -23,7 +23,7 @@ Route::middleware('auth')->group(function () {
     // Admin auto-beheer (vervangt alle 6 de losse car-routes in 1 keer)
     // ->names('admin.cars') koppelt 'admin.cars.' voor de routenamen, zodat je in de view via route bijv:('admin.cars.index')
     Route::resource("/admin/cars", AdminCarController:: class)->names("admin.cars");
-    Route::resource("/admin/reservations", ReservationController:: class)->except(["create", "store"])->names("reservations");
+    Route::resource("/admin/reservations", ReservationController:: class)->except(["create", "store"])->names("admin.reservations");
 });
 
 // Publieke routes voor bezoekers (alleen index en show)
